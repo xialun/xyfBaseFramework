@@ -17,9 +17,9 @@ s.platform     = :ios, "8.0"
 s.source       = { :git => "https://github.com/xialun/xyfBaseFramework.git", :tag => "1.0.0" }
 
 
-s.source_files = "xyfBaseFramework/**/*.{h,m}"
+s.source_files  = "xyfBaseFramework/Database/*.{h,m}","xyfBaseFramework/Extensions/*.{h,m}","xyfBaseFramework/RSA/*.{h,m}","xyfBaseFramework/Security/*.{h,m}","xyfBaseFramework/System/*.{h,m}","xyfBaseFramework/network/*.{h,m}"
 
-s.public_header_files = "xyfBaseFramework/**/SCBaseObserveDefine.h"
+s.public_header_files = "xyfBaseFramework/System/SCBaseObserveDefine.h"
 
 
 
