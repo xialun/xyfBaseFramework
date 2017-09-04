@@ -36,12 +36,12 @@ static SCIntermediateHandle *shareIntermediaHandle = nil;
     va_end(args);
     
     Class targetClass;
-    if (isValid(target)) {
+    if (target) {
         targetClass = NSClassFromString(target);
     }
     
     SEL method = NULL;
-    if (isValid(methodName)) {
+    if (methodName) {
         
         method = NSSelectorFromString(methodName);
     }
@@ -79,12 +79,12 @@ static SCIntermediateHandle *shareIntermediaHandle = nil;
     va_end(args);
     
     Class targetClass;
-    if (isValid(target)) {
+    if (target) {
         targetClass = NSClassFromString(target);
     }
     
     SEL method = NULL;
-    if (isValid(methodName)) {
+    if (methodName) {
         
         method = NSSelectorFromString(methodName);
     }
