@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 
 s.name         = "xyfBaseFramework"
-s.version      = "1.0.21"
+s.version      = "1.0.22"
 s.summary      = "xyf基本框架"
 
 s.homepage     = "https://github.com/xialun/xyfBaseFramework.git"
@@ -14,7 +14,7 @@ s.author       = { "wangshuai" => "1032188750@qq.com" }
 
 
 
-s.source       = { :git => "https://github.com/xialun/xyfBaseFramework.git", :tag => "1.0.21" }
+s.source       = { :git => "https://github.com/xialun/xyfBaseFramework.git", :tag => "1.0.22" }
 
 
 s.source_files  = "xyfBaseFramework/**/*.{h,m}"
@@ -22,7 +22,7 @@ s.source_files  = "xyfBaseFramework/**/*.{h,m}"
 s.requires_arc = true
 
 s.public_header_files  = "xyfBaseFramework/System/SCBaseObserveDefine.h"
-
+git
 s.platform     = :ios, "7.0"
 
 
