@@ -233,8 +233,6 @@
                             
                             NSError *error = [NSError errorWithDomain:@"请求构建失败" code:-10 userInfo:nil];
                             
-                            DLog(@"%@",error);
-                            
                             (*imp)(target, method, bizData, error,CallbackFromRequest);
                         }
                     }
@@ -287,7 +285,7 @@
     
     id result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
     
-    DLog(@"middle:%@\n======\n%@\n====%@",urlResponse.urlRequest,result,urlResponse.requestId);
+    NSLog(@"middle:%@\n======\n%@\n====%@",urlResponse.urlRequest,result,urlResponse.requestId);
     //2.
     if (result && !error) {
         
@@ -298,14 +296,14 @@
             
             [self parseToken:[result objectForKey:@"header"] urlResponse:urlResponse];//解析token
         }
-        DLog(@"==1==返回结果==2===%@",urlResponse.urlRequest);
+        NSLog(@"==1==返回结果==2===%@",urlResponse.urlRequest);
         
         NSMutableDictionary *resultDic = [[NSMutableDictionary alloc]init];
         
         //3.
-        if (!isValid(body)) {
+        if (body) {
             
-            if (isValid([result objectForKey:@"header"])) {
+            if ([result objectForKey:@"header"]) {
                 
                 [resultDic setObject:[result objectForKey:@"header"] forKey:@"header"];
                 

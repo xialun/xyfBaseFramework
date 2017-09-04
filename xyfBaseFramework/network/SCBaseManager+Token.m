@@ -43,7 +43,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
 #pragma mark -解析token机制
 - (void)parseToken:(NSDictionary *)headerDic urlResponse:(SCURLResponse *)urlResponse{
     
-    if (isValid(headerDic)) {
+    if (headerDic) {
         //token提示信息
         NSString *retMessage = [headerDic objectForKey:@"retMessage"];
         //Token 状态 99代表token失效 其他正常
@@ -55,14 +55,14 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
                 
                 [[SCNetworkingConfigurationManager sharedInstance].tokenValidTarget_Array addObject:self];
                 
-                if (!isValid(retMessage) || [retMessage isEqualToString:@""]) {
+                if (!retMessage || [retMessage isEqualToString:@""]) {
                     
                     retMessage = @"由于你长时间未操作，请重新登录";
                 }
                 
                 self.cancel = YES;//取消回调
                 [[SCApiProxy sharedInstance] cancelAllRequest];//取消所有未发出的请求
-                DLog(@"==1==解析token==2==%@",urlResponse.urlRequest);
+ 
                 //token处理线程,异步方法，执行串行队列
                 dispatch_async(token_manager_sync_Login_queue(), ^{
                     
@@ -78,13 +78,13 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
 #pragma mark -token处理
 - (void)dealToken:(NSString *)retMessage response:(SCURLResponse *)response{
     
-    DLog(@"==1==处理token==1==%@",response.urlRequest);
+    NSLog(@"==1==处理token==1==%@",response.urlRequest);
     
     if (![SCNetworkingConfigurationManager sharedInstance].tokenValid) {
         
         if (![SCNetworkingConfigurationManager sharedInstance].tokenValidToCreateFail) {
             
-            DLog(@"==1==处理token==2==%@",response.urlRequest);
+            NSLog(@"==1==处理token==2==%@",response.urlRequest);
             
             [SCNetworkingConfigurationManager sharedInstance].tokenValidToCreateFail = YES;
             
@@ -107,7 +107,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
 //游客自动登录
 - (void)touristLogin:(NSString *)message{
     
-    DLog(@"游客token失效");
+    NSLog(@"游客token失效");
     //如果已经跳转到登录界面，则不再进行自动登录
     if ([SCNetworkingConfigurationManager sharedInstance].tokenValid) {
         return;
@@ -144,7 +144,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
     
     NSURLRequest *request = [[SCIntermediateHandle shareIntermediateHandle]preformTarget:@"SCRegisterRequest" methodWithRequest:@"touristRequest" args:bodyDic,nil];
     
-    if (isValid(request)) {
+    if (request) {
         [self autoLoginAndTouristLogin:request type:0];
     }
     
@@ -176,7 +176,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
             //登录成功
             if (bodyDic) {
                 
-                DLog(@"游客自动登录成功");
+                NSLog(@"游客自动登录成功");
                 
                 if ([SCNetworkingConfigurationManager sharedInstance].tokenValid) {//如果已经跳转到登录界面，则结束调用token失效接口
                     
@@ -231,7 +231,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
                     return;
                 }
                 
-                DLog(@"token失效处理:%@==%@",NSStringFromSelector(object.requestAction),object.targetSelf);
+                NSLog(@"token失效处理:%@==%@",NSStringFromSelector(object.requestAction),object.targetSelf);
                 [[object class] execute:object.requestAction target:object.targetSelf callback:object.callBackAction argsList:object.argList];
             }
         }
@@ -245,10 +245,10 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
         return;
     }
     NSString *mobile = [SCUserEntity shareInstance].mobile;
-    if (isValid(mobile)&& ![mobile isEqualToString:@""]) {
+    if (mobile&& ![mobile isEqualToString:@""]) {
         NSDictionary *lastUserInfo =[[SCIntermediateHandle shareIntermediateHandle]preformTarget:@"SCRegisterDatabaseQueue" methodWithRequest:@"queryLastLoginUserInfoWithUserMobile:" args:mobile,nil];
         
-        if (!isValid(lastUserInfo)) {
+        if (!lastUserInfo) {
             return;
         }
         NSString *lastUserPwd = [lastUserInfo objectForKey:@"passwordOfPlaintext"];
@@ -274,7 +274,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
             
             NSURLRequest *request = [[SCIntermediateHandle shareIntermediateHandle]preformTarget:@"SCRegisterRequest" methodWithRequest:@"loginRequest:" args:bodyDic,nil];
             
-            if (isValid(request)) {
+            if (request) {
                 [self autoLoginAndTouristLogin:request type:1];
             }
             
@@ -310,7 +310,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
             result = [NSJSONSerialization JSONObjectWithData:decryptedData options:NSJSONReadingAllowFragments error:&error];
         }
         
-        DLog(@"自动登录成功%@/n=%@/n=%@",urlResponse.requestId,result,error);
+        NSLog(@"自动登录成功%@/n=%@/n=%@",urlResponse.requestId,result,error);
         if (type == 1) {
             
             [strongSelf autoLoginCallBack:result error:error];
@@ -321,7 +321,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
         
     } fail:^(SCURLResponse *urlResponse) {
         
-        DLog(@"自动登录失败%@",urlResponse.requestId);
+        NSLog(@"自动登录失败%@",urlResponse.requestId);
         
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
@@ -334,7 +334,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
         }
     }];
     
-    DLog(@"自动登录开始%@",number);
+    NSLog(@"自动登录开始%@",number);
 }
 
 //自动登录结果回调
@@ -359,7 +359,7 @@ static NSString *tokenErrorMessageKey = @"tokenErrorMessage";
         
         if ([resultFlag intValue] == 1) {
             
-            DLog(@"自动登录token成功");
+            NSLog(@"自动登录token成功");
             
             if ([SCNetworkingConfigurationManager sharedInstance].tokenValid) {//如果已经跳转到登录界面，则结束调用token失效接口
                 
