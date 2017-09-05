@@ -21,8 +21,7 @@
 
 #define ios8x           ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
-//判断当前用户是否登录状态
-BOOL kIsLogin;
+
 
 /*******************网络请求使用的宏定义**********************************/
 #define Appkey      @"lishui"
